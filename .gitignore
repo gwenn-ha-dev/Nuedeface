@@ -1,0 +1,27 @@
+# Build artifacts
+/nuedeface
+/Nuedeface.app/
+
+# macOS
+.DS_Store
+
+# Audio assets & exports (fournis ton propre échantillon — voir assets/README.md)
+*.m4a
+*.wav
+*.aif
+*.aiff
+*.caf
+
+# Projets / essais générés
+*.nuef
+*.nuedeface
+
+# Claude Code (réglages locaux machine)
+.claude/settings.local.json
+
+# Debug symbols (builds sanitizer/-g)
+*.dSYM/
+nuedeface_tsan
+
+# Release artifacts
+dist/
