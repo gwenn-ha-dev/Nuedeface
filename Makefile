@@ -14,8 +14,14 @@ BUILD_DIR := build
 
 ifeq ($(PLATFORM),ios)
 DESTINATION := generic/platform=iOS Simulator
+# A generic destination compiles but cannot run: xcodebuild refuses to test on
+# "Any iOS Simulator Device". Tests need a concrete simulator, resolved late so
+# that a machine without one still builds.
+TEST_DESTINATION = platform=iOS Simulator,id=$(SIM_ID)
+SIM_ID = $(shell xcrun simctl list devices available 2>/dev/null | awk -F'[()]' '/iPhone/ {print $$2; exit}')
 else
 DESTINATION := platform=macOS
+TEST_DESTINATION = $(DESTINATION)
 endif
 # CI has neither a provisioning profile nor a signing certificate. Locally we
 # sign normally; under CI we do not, because nothing there gets run or shipped.
@@ -89,11 +95,14 @@ ifeq ($(KIND),spm)
 		echo "› no test target in this package — see make lint" ; \
 	fi
 else ifeq ($(KIND),xcode)
-	@if xcodebuild -list -project $(NAME).xcodeproj 2>/dev/null | grep -q '$(NAME)Tests'; then \
-		xcodebuild -scheme $(SCHEME) -destination '$(DESTINATION)' \
-		  -derivedDataPath $(BUILD_DIR)/DerivedData $(SIGNING) $(PLUGINS) $(SKIP_UI) test ; \
-	else \
+	@if ! xcodebuild -list -project $(NAME).xcodeproj 2>/dev/null | grep -q '$(NAME)Tests'; then \
 		echo "› no test target in this project — see make lint" ; \
+	elif [ "$(PLATFORM)" = "ios" ] && [ -z "$(SIM_ID)" ]; then \
+		echo "› no iOS simulator installed — xcodebuild -downloadPlatform iOS" ; \
+		exit 1 ; \
+	else \
+		xcodebuild -scheme $(SCHEME) -destination '$(TEST_DESTINATION)' \
+		  -derivedDataPath $(BUILD_DIR)/DerivedData $(SIGNING) $(PLUGINS) $(SKIP_UI) test ; \
 	fi
 else
 	./outils/test.sh
