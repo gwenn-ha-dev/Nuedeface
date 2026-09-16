@@ -3,7 +3,7 @@
 #   - produit ./nuedeface           : le binaire (serveur headless ET hôte de l'UI)
 #   - assemble ./Nuedeface.app      : bundle .app pour double-clic (Dock, menu, focus fenêtre)
 set -e
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 # coeur + UI, un seul module, un seul binaire
 swiftc -O \
@@ -25,6 +25,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+  <key>CFBundleDevelopmentRegion</key><string>fr</string>
+  <key>CFBundleLocalizations</key><array><string>en</string><string>fr</string></array>
   <key>CFBundleName</key>            <string>Nuedeface</string>
   <key>CFBundleDisplayName</key>     <string>Nuedeface</string>
   <key>CFBundleIdentifier</key>      <string>local.nuedeface</string>
@@ -44,3 +46,9 @@ PLIST
 codesign --force --deep --sign - "$APP" 2>/dev/null && echo "signé ad-hoc" || echo "codesign indisponible (non bloquant)"
 
 echo "ok -> ./nuedeface (headless: --headless [sock])  |  open ./Nuedeface.app (GUI)"
+
+# les deux localisations, sinon macOS n'en voit qu'une (charte §6)
+for L in en fr; do
+    mkdir -p "$APP/Contents/Resources/$L.lproj"
+    cp Resources/$L.lproj/Localizable.strings "$APP/Contents/Resources/$L.lproj/"
+done

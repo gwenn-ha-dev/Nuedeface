@@ -4,7 +4,7 @@
 #   2. PROTOCOLE  : lance le vrai serveur headless et le pilote en client (tests/protocol.swift).
 # Sort ≠ 0 au premier échec → CI-friendly.
 set -e
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 TMP="$(mktemp -d)"
 

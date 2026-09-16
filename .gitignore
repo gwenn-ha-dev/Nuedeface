@@ -32,3 +32,34 @@ build/
 DerivedData/
 *.app
 xcuserdata/
+
+# --- charte gwenn-ha-dev ---
+# Build artefacts
+*.dSYM
+*.o
+*.xcarchive
+
+# Xcode
+*.xcuserstate
+*.xcscmblueprint
+.swiftpm/
+
+# Generated intermediates (the .icns itself IS versioned)
+Resources/AppIcon.iconset/
+
+# Downloaded models and datasets
+Models/
+*.safetensors
+*.ckpt
+*.mlmodelc
+
+._*
+
+# Editors
+.vscode/
+.idea/
+
+# Secrets
+.env
+*.p12
+*.mobileprovision

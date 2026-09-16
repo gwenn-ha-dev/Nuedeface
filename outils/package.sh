@@ -9,7 +9,7 @@
 # Le bundle est signé ad-hoc par build.sh. Pour une distribution SANS alerte Gatekeeper au téléchargement,
 # il faut une signature Developer ID + notarisation (compte Apple payant requis).
 set -e
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 ./build.sh
 

@@ -1,41 +1,37 @@
 # Contributing to Nuedeface
 
-Thanks for your interest! Nuedeface is a deliberately small, dependency-free macOS project. A few notes
-to keep it that way.
+Thanks for taking the time. This project follows the gwenn-ha-dev project
+charter — the short version is below.
 
-## Ground rules
+## Before you start
 
-- **No external dependencies.** `swiftc` only — no SwiftPM, no CocoaPods, no Homebrew packages. If a
-  feature seems to need a dependency, it almost certainly belongs out of scope.
-- **100% local.** One process, one Unix socket, several clients. Nothing networked or remote.
-- **DSP is Apple-native** (AVAudioEngine + Audio Units). We don't hand-roll DSP.
+- Open an issue first for anything beyond a typo fix.
+- One concern per pull request.
 
-## Build & test
+## Working on it
 
 ```sh
-./build.sh     # produces ./nuedeface and Nuedeface.app
-./test.sh      # asserted DSP/model tests — must stay green
+make build     # release build, warnings are errors
+make test      # test suite
+make lint      # charter compliance — must pass
 ```
 
-Both run in CI (macOS) on every push and PR. A PR is expected to keep `./test.sh` passing.
+## Conventions
 
-## Making a change
+- **Language.** Code, comments, commit messages and `README.md` are in English.
+  `README.fr.md` carries the French version and must stay in sync.
+- **Commits.** `<Scope>: <what changes>`, imperative, 72 characters max on the
+  first line. Example: `Sidebar: combine facet rows with cmd-click`.
+- **Branches.** `feat/…`, `fix/…`, `docs/…`. Never commit directly to `main`.
+- **Strings.** No user-visible string is hard-coded. Everything goes through
+  `Resources/Localizable.xcstrings`, in both `en` and `fr`. `make lint` fails
+  if a key is missing in either language.
+- **Dependencies.** Default is none. Adding one requires a justification in the
+  README's *Dependencies* section.
+- **Build artefacts** are never committed.
 
-1. Branch from `main`.
-2. Keep the diff focused; match the surrounding style (the codebase favors dense, well-commented Swift —
-   read a neighboring file before writing).
-3. If you touch DSP or the document model, **add or extend an assertion in `tests/main.swift`**. The
-   `proofs/` benches are also a good place to de-risk a tricky behavior in isolation.
-4. Run `./build.sh && ./test.sh` locally.
-5. Open a PR describing *what* and *why*.
+## Releasing
 
-## Reporting bugs / ideas
-
-Open an issue with: macOS version, steps to reproduce, and — for audio bugs — the exact socket commands
-or a minimal `project.save` JSON if you can.
-
-## Scope
-
-In scope: mixing, native effects, measurement, the socket protocol, the UI's clarity. Out of scope
-(by design): recording, MIDI, third-party plugins, anything remote. Proposals that grow the dependency
-footprint or the surface area will be weighed hard against the project's thesis.
+1. Update `CHANGELOG.md`.
+2. Bump the version.
+3. Tag `v<major>.<minor>.<patch>`.

@@ -4,20 +4,22 @@ on:
   push:
     branches: [main]
   pull_request:
-  workflow_dispatch:
+    branches: [main]
 
 jobs:
-  build-and-test:
-    name: Build & test (macOS)
-    runs-on: macos-14
+  build:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Swift version
-        run: swift --version
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
 
-      - name: Build (swiftc, zéro dépendance)
-        run: ./build.sh
+      - name: Build
+        run: make build
 
-      - name: Tests (DSP / modèle)
-        run: ./test.sh
+      - name: Test
+        run: make test
+
+      - name: Charter compliance
+        run: make lint
