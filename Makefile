@@ -13,13 +13,14 @@ CHARTE   := $(abspath ../../Charte)
 BUILD_DIR := build
 
 ifeq ($(PLATFORM),ios)
-DESTINATION := platform=iOS Simulator,name=iPhone 16
+DESTINATION := generic/platform=iOS Simulator
 else
 DESTINATION := platform=macOS
 endif
-# CI has no provisioning profile, and a simulator build does not need one.
-ifeq ($(PLATFORM),ios)
-SIGNING := CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
+# CI has neither a provisioning profile nor a signing certificate. Locally we
+# sign normally; under CI we do not, because nothing there gets run or shipped.
+ifdef CI
+SIGNING := CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" CODE_SIGN_ENTITLEMENTS= DEVELOPMENT_TEAM=
 else
 SIGNING :=
 endif
