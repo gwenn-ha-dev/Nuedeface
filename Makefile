@@ -67,8 +67,12 @@ test: ## Run the test suite
 ifeq ($(KIND),spm)
 	swift test
 else ifeq ($(KIND),xcode)
-	xcodebuild -scheme $(SCHEME) -destination '$(DESTINATION)' \
-	  -derivedDataPath $(BUILD_DIR)/DerivedData test
+	@if xcodebuild -list -project $(NAME).xcodeproj 2>/dev/null | grep -q '$(NAME)Tests'; then \
+		xcodebuild -scheme $(SCHEME) -destination '$(DESTINATION)' \
+		  -derivedDataPath $(BUILD_DIR)/DerivedData $(SIGNING) test ; \
+	else \
+		echo "› no test target in this project — see make lint" ; \
+	fi
 else
 	./outils/test.sh
 endif
