@@ -32,6 +32,13 @@ else
 PLUGINS :=
 endif
 
+# UI tests drive a real window and need a graphical session; a CI runner has none.
+ifdef CI
+SKIP_UI := -skip-testing:$(NAME)UITests
+else
+SKIP_UI :=
+endif
+
 APP       := $(BUILD_DIR)/$(NAME).app
 
 .DEFAULT_GOAL := help
@@ -80,7 +87,7 @@ ifeq ($(KIND),spm)
 else ifeq ($(KIND),xcode)
 	@if xcodebuild -list -project $(NAME).xcodeproj 2>/dev/null | grep -q '$(NAME)Tests'; then \
 		xcodebuild -scheme $(SCHEME) -destination '$(DESTINATION)' \
-		  -derivedDataPath $(BUILD_DIR)/DerivedData $(SIGNING) test ; \
+		  -derivedDataPath $(BUILD_DIR)/DerivedData $(SIGNING) $(SKIP_UI) test ; \
 	else \
 		echo "› no test target in this project — see make lint" ; \
 	fi
