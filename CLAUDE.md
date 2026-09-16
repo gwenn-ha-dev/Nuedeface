@@ -52,7 +52,7 @@ nuedeface
 outils/
 proofs/
 src/
-tests/
+Tests/
 tools/
 ```
 
