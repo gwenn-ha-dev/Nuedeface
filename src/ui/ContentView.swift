@@ -84,7 +84,7 @@ struct ActivityFeed: View {
     @EnvironmentObject var store: SocketClient
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack { Text("ACTIVITÉ").sectionLabel(); Spacer(); Text("\(store.activity.count)").font(Typo.value).foregroundColor(.secondary) }
+            HStack { Text("ACTIVITÉ").sectionLabel(); Spacer(); Text(verbatim: "\(store.activity.count)").font(Typo.value).foregroundColor(.secondary) }
                 .padding(.horizontal, 12).padding(.vertical, 8)
             Divider()
             if store.activity.isEmpty {

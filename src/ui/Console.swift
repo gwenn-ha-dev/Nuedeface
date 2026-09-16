@@ -855,7 +855,7 @@ struct LUFSMeter: View {
                     .stroke(Color.white.opacity(0.7), style: StrokeStyle(lineWidth: 1, dash: [3, 2]))
                 // graduations
                 ForEach([0, -16, -36], id: \.self) { v in
-                    Text("\(v)").font(.system(size: 7)).foregroundColor(.white.opacity(0.55))
+                    Text(verbatim: "\(v)").font(.system(size: 7)).foregroundColor(.white.opacity(0.55))
                         .position(x: w - 9, y: max(6, min(h - 6, y(Double(v)))))
                 }
             }

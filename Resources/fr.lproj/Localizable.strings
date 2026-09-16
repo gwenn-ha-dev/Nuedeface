@@ -80,6 +80,7 @@
 "normaliser à -16 LUFS" = "normaliser à -16 LUFS";
 "ou « + clip… » dans l'entête · clic droit › Ajouter un clip" = "ou « + clip… » dans l'entête · clic droit › Ajouter un clip";
 "pan" = "pan";
+"pic %@ · tilt %@" = "pic %@ · tilt %@";
 "piste" = "piste";
 "plus tard dans la chaîne" = "plus tard dans la chaîne";
 "plus tôt dans la chaîne" = "plus tôt dans la chaîne";
