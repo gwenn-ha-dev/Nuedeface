@@ -83,11 +83,15 @@ endif
 .PHONY: test
 test: ## Run the test suite
 ifeq ($(KIND),spm)
-	swift test
+	@if swift test --list-tests >/dev/null 2>&1 && [ -n "$$(swift test --list-tests 2>/dev/null)" ]; then \
+		swift test ; \
+	else \
+		echo "› no test target in this package — see make lint" ; \
+	fi
 else ifeq ($(KIND),xcode)
 	@if xcodebuild -list -project $(NAME).xcodeproj 2>/dev/null | grep -q '$(NAME)Tests'; then \
 		xcodebuild -scheme $(SCHEME) -destination '$(DESTINATION)' \
-		  -derivedDataPath $(BUILD_DIR)/DerivedData $(SIGNING) $(SKIP_UI) test ; \
+		  -derivedDataPath $(BUILD_DIR)/DerivedData $(SIGNING) $(PLUGINS) $(SKIP_UI) test ; \
 	else \
 		echo "› no test target in this project — see make lint" ; \
 	fi
