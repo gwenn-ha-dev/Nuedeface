@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/gwenn-ha-dev/Nuedeface/actions/workflows/ci.yml/badge.svg)](https://github.com/gwenn-ha-dev/Nuedeface/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-![Platform](https://img.shields.io/badge/Platform-macOS%2014%2B-black?logo=apple)
+![Platform](https://img.shields.io/badge/Platform-macOS%2026%2B-black?logo=apple)
 ![Swift 6](https://img.shields.io/badge/Swift-6-orange?logo=swift)
 
 *🇬🇧 English · 🇫🇷 [Français](./README.fr.md)*

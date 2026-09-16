@@ -4,7 +4,7 @@
 
 **Simple mixing, done well — native macOS, GarageBand-inspired, *headless*, driven over a Unix socket.** One surface, three clients: **you** (the native UI), an **AI** — any of them, not just Claude — and a **script**, all speaking the same JSON protocol.
 
-Platform: macOS 14+. Build system: swiftc, no package manager. Bundle ID `dev.gwennha.Nuedeface`.
+Platform: macOS 26+. Build system: swiftc, no package manager. Bundle ID `dev.gwennha.Nuedeface`.
 
 ## Build and test
 

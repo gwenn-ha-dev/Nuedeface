@@ -5,8 +5,13 @@
 set -e
 cd "$(dirname "$0")/.."
 
+# Minimum macOS, pinned. Without -target, swiftc stamps the binary with the
+# installed SDK's version: the same source produced macOS 27 here and 26.6 on
+# CI, and the README's claim went stale with every Xcode update.
+DEPLOY="$(uname -m)-apple-macos26.0"
+
 # coeur + UI, un seul module, un seul binaire
-swiftc -O \
+swiftc -O -target "$DEPLOY" \
   src/AudioUnits.swift src/Spectrum.swift src/Document.swift src/Engine.swift src/LiveEngine.swift src/Recipes.swift src/Server.swift src/main.swift \
   src/ui/Theme.swift src/ui/SocketClient.swift src/ui/AppHost.swift src/ui/Widgets.swift \
   src/ui/Console.swift src/ui/Timeline.swift src/ui/Workspace.swift src/ui/ContentView.swift src/ui/CommandConsole.swift \
