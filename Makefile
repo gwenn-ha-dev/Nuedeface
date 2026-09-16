@@ -25,6 +25,13 @@ else
 SIGNING :=
 endif
 
+# MLX-Swift and friends ship build plugins; Xcode refuses to run them unattended.
+ifdef CI
+PLUGINS := -skipPackagePluginValidation -skipMacroValidation
+else
+PLUGINS :=
+endif
+
 APP       := $(BUILD_DIR)/$(NAME).app
 
 .DEFAULT_GOAL := help
@@ -46,7 +53,7 @@ ifeq ($(KIND),spm)
 else ifeq ($(KIND),xcode)
 	xcodebuild -scheme $(SCHEME) -configuration Release -destination '$(DESTINATION)' \
 	  -derivedDataPath $(BUILD_DIR)/DerivedData \
-	  $(SIGNING) build
+	  $(SIGNING) $(PLUGINS) build
 else
 	./outils/build.sh release
 endif
