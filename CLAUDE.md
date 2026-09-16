@@ -28,7 +28,8 @@ the `Makefile`. It is the same interface in every project here.
 - **`README.md` and `README.fr.md` stay in sync.** Editing one means editing the other.
 - **The icon is generated**, never hand-placed: `outils/icone.swift` is the
   source, `make icon` rebuilds `Resources/AppIcon.icns`.
-- Code, comments and commit messages are in **English**.
+- Identifiers, commit messages and both READMEs are in **English**; comments may
+  be in English or French (charter §2).
 
 ## Layout
 
