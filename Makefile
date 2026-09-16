@@ -17,8 +17,18 @@ DESTINATION := generic/platform=iOS Simulator
 # A generic destination compiles but cannot run: xcodebuild refuses to test on
 # "Any iOS Simulator Device". Tests need a concrete simulator, resolved late so
 # that a machine without one still builds.
+#
+# Take the newest iOS runtime, not the first line: `simctl` lists runtimes in
+# whatever order it pleases, and the first iPhone it named on the CI runner was
+# an iOS 26.2 device — below Paraphe's own floor, so xcodebuild answered "unable
+# to find a destination matching" and the suite never ran. A simulator older
+# than the app cannot host it.
 TEST_DESTINATION = platform=iOS Simulator,id=$(SIM_ID)
-SIM_ID = $(shell xcrun simctl list devices available 2>/dev/null | awk -F'[()]' '/iPhone/ {print $$2; exit}')
+SIM_ID = $(shell xcrun simctl list devices available 2>/dev/null | awk -F'[()]' \
+	'/^-- iOS / { split($$0, w, " "); split(w[3], p, "."); v = p[1]*10000 + p[2]*100 + p[3]; next } \
+	 /^-- /     { v = 0; next } \
+	 /iPhone/ && v >= best { best = v; id = $$2 } \
+	 END        { print id }')
 else
 DESTINATION := platform=macOS
 TEST_DESTINATION = $(DESTINATION)
