@@ -25,3 +25,10 @@ nuedeface_tsan
 
 # Release artifacts
 dist/
+
+.claude/
+build/
+.build/
+DerivedData/
+*.app
+xcuserdata/
