@@ -17,6 +17,13 @@ DESTINATION := platform=iOS Simulator,name=iPhone 16
 else
 DESTINATION := platform=macOS
 endif
+# CI has no provisioning profile, and a simulator build does not need one.
+ifeq ($(PLATFORM),ios)
+SIGNING := CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
+else
+SIGNING :=
+endif
+
 APP       := $(BUILD_DIR)/$(NAME).app
 
 .DEFAULT_GOAL := help
@@ -36,8 +43,9 @@ build: ## Release build (warnings are errors)
 ifeq ($(KIND),spm)
 	swift build -c release -Xswiftc -warnings-as-errors
 else ifeq ($(KIND),xcode)
-	xcodebuild -scheme $(SCHEME) -configuration Release \
-	  -derivedDataPath $(BUILD_DIR)/DerivedData SWIFT_TREAT_WARNINGS_AS_ERRORS=YES build
+	xcodebuild -scheme $(SCHEME) -configuration Release -destination '$(DESTINATION)' \
+	  -derivedDataPath $(BUILD_DIR)/DerivedData SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
+	  $(SIGNING) build
 else
 	./outils/build.sh release
 endif
@@ -102,7 +110,11 @@ endif
 
 .PHONY: lint
 lint: ## Check compliance with the project charter
-	@$(CHARTE)/outils/verifier.sh .
+	@if [ -x "$(CHARTE)/outils/verifier.sh" ]; then \
+		"$(CHARTE)/outils/verifier.sh" . ; \
+	else \
+		echo "› charter not checked out next to this repo — lint skipped" ; \
+	fi
 
 # ---------------------------------------------------------------- clean
 
