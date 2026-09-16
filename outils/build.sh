@@ -29,7 +29,7 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
   <key>CFBundleLocalizations</key><array><string>en</string><string>fr</string></array>
   <key>CFBundleName</key>            <string>Nuedeface</string>
   <key>CFBundleDisplayName</key>     <string>Nuedeface</string>
-  <key>CFBundleIdentifier</key>      <string>local.nuedeface</string>
+  <key>CFBundleIdentifier</key>      <string>dev.gwennha.Nuedeface</string>
   <key>CFBundleExecutable</key>      <string>nuedeface</string>
   <key>CFBundleIconFile</key>        <string>AppIcon</string>
   <key>CFBundlePackageType</key>     <string>APPL</string>

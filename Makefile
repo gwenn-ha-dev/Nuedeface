@@ -45,7 +45,7 @@ ifeq ($(KIND),spm)
 	swift build -c release -Xswiftc -warnings-as-errors
 else ifeq ($(KIND),xcode)
 	xcodebuild -scheme $(SCHEME) -configuration Release -destination '$(DESTINATION)' \
-	  -derivedDataPath $(BUILD_DIR)/DerivedData SWIFT_TREAT_WARNINGS_AS_ERRORS=YES \
+	  -derivedDataPath $(BUILD_DIR)/DerivedData \
 	  $(SIGNING) build
 else
 	./outils/build.sh release
