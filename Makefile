@@ -46,8 +46,12 @@ help: ## List every target
 
 # ---------------------------------------------------------------- build
 
+.PHONY: deps
+deps: ## Fetch and build third-party dependencies, if this project has any
+	@if [ -x outils/deps.sh ]; then ./outils/deps.sh; fi
+
 .PHONY: build debug
-build: ## Release build (warnings are errors)
+build: deps ## Release build (warnings are errors)
 ifeq ($(KIND),spm)
 	swift build -c release -Xswiftc -warnings-as-errors
 else ifeq ($(KIND),xcode)
@@ -58,7 +62,7 @@ else
 	./outils/build.sh release
 endif
 
-debug: ## Debug build
+debug: deps ## Debug build
 ifeq ($(KIND),spm)
 	swift build -c debug
 else ifeq ($(KIND),xcode)
